@@ -11,41 +11,61 @@ public class Enemy : MonoBehaviour
     [SerializeField] float maxSpeed = 1.5f;
     [SerializeField] float enemyPosY = 0.5f;
 
-    private float decreaseRate = 0.6f;
-    private GameObject player;
+    private float decreaseRate = 0.5f;
     private PlayerMovement playerMovement;
     private Vector3 playerLocation;
 
     void Start()
     {
-        playerTransform = GameObject.Find("Player").transform;
-        player = GameObject.Find("Player");
-        playerMovement = player.GetComponent<PlayerMovement>();
-        speed = maxSpeed;        
+        PlayerFeatures();
+        speed = maxSpeed;//Speed of enemy
     }
 
     void FixedUpdate()
     {
         EnemyMovement();
     }
-
-    private void EnemyMovement()
-    {
-        playerLocation = player.transform.position;
-        playerLocation.y = enemyPosY;
-        transform.LookAt(playerTransform.position);
-        transform.position = Vector3.MoveTowards(transform.position, playerLocation, speed * Time.fixedDeltaTime);
-    }
-
+    
     void OnCollisionEnter(Collision collision)
+    {
+        DecreasePlayerSpeed(collision);
+        ResetKinematics();// Resets kinematicks of player and enemy.
+    }
+    
+    void OnCollisionExit(Collision collision)
     {
         if(collision.transform.tag == "Player")
         {
-            playerMovement.DecreaseSpeed();   
+            playerMovement.IncreaseSpeed();
+        }
+    }
+
+    private void PlayerFeatures()
+    {
+        playerTransform = GameObject.Find("Player").transform;
+        playerMovement = playerTransform.GetComponent<PlayerMovement>();
+    }    
+
+    private void EnemyMovement()
+    {
+        playerLocation = playerTransform.position;
+        playerLocation.y = enemyPosY;
+        transform.LookAt(playerTransform.position);
+        transform.position = Vector3.MoveTowards(transform.position, playerLocation, speed * Time.fixedDeltaTime);
+    }    
+
+    private void DecreasePlayerSpeed(Collision collision)
+    {
+        if (collision.transform.tag == "Player")
+        {
+            playerMovement.DecreaseSpeed();
             speed *= decreaseRate;
             Invoke(nameof(StopEnemy), 1);
         }
+    }
 
+    private void ResetKinematics()
+    {
         rb.isKinematic = true;
         rb.isKinematic = false; //This two line resets physic that applied from an enemy when collide with an other enemy.
     }
@@ -61,13 +81,7 @@ public class Enemy : MonoBehaviour
         speed = maxSpeed;
     }
 
-    void OnCollisionExit(Collision collision)
-    {
-        if(collision.transform.tag == "Player")
-        {
-            playerMovement.IncreaseSpeed();
-        }
-    }
+    
 
 
 }

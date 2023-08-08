@@ -8,59 +8,78 @@ using Random = UnityEngine.Random;
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
-
-    [SerializeField]
-    [Range(1, 10)] int maxEnemy;
-    
-    int enemySize = 1;
+    [SerializeField] [Range(0.1f, 10f)]float spawnTimer = 1f;
+    [SerializeField] [Range(1, 10)] int maxEnemy;
 
     float aboveInvisiblePoints = 30f;
     float belowInvisiblePoints = -15f;
     float leftInvisiblePoints = -30f;
     float rightInvisiblePoints = 30f;
 
-    Transform playerTransform;
+    GameObject player;
     GameObject[] pool;
     Vector3 spawnPoint;
     float y = 0.5f;
 
-    void Start()
+    void Awake()
     {
-        Invoke(nameof(SpawnEnemy), 2);
+        PopulatePool();
+        player = GameObject.Find("Player");
     }
 
-    void SpawnEnemy() //In the future, this function should not be recursive!!!
+    void Start()
     {
-        if(enemySize > maxEnemy)
+        StartCoroutine(SpawnEnemy());    
+    }
+
+    private void PopulatePool()
+    {
+        pool = new GameObject[maxEnemy];
+
+        for (int i = 0; i < pool.Length; i++)
         {
-            return;
+            pool[i] = Instantiate(enemyPrefab, transform);
+            pool[i].SetActive(false);
         }
+    }
 
-        playerTransform = GameObject.Find("Player").transform;
-
+    void RelocateEnemy() //In the future, this function should not be recursive!!!
+    {
         switch(Random.Range(1,5))// Returns 1-4
         {
             case 1:
-                spawnPoint = new Vector3(playerTransform.position.x, y, playerTransform.position.z + aboveInvisiblePoints);
+                spawnPoint = new Vector3(player.transform.position.x, y, player.transform.position.z + aboveInvisiblePoints);
                 break;
             case 2:
-                spawnPoint = new Vector3(playerTransform.position.x + leftInvisiblePoints, y, playerTransform.position.z);
+                spawnPoint = new Vector3(player.transform.position.x + leftInvisiblePoints, y, player.transform.position.z);
                 break;
             case 3:
-                spawnPoint = new Vector3(playerTransform.position.x, y, playerTransform.position.z + belowInvisiblePoints);
+                spawnPoint = new Vector3(player.transform.position.x, y, player.transform.position.z + belowInvisiblePoints);
                 break;
             case 4:
-                spawnPoint = new Vector3(playerTransform.position.x + rightInvisiblePoints, y, playerTransform.position.z);
+                spawnPoint = new Vector3(player.transform.position.x + rightInvisiblePoints, y, player.transform.position.z);
                 break;
             default:
                 Debug.Log("Error");
                 break;
         }
+        for (int i = 0; i < pool.Length; i++)
+        {
+            if (pool[i].activeInHierarchy == false)
+            {
+                pool[i].transform.position = spawnPoint;
+                pool[i].SetActive(true);
+                return;
+            }
+        }
+    }
 
-        Instantiate(enemyPrefab, spawnPoint, Quaternion.identity, transform);
-
-        enemySize++;
-
-        Invoke(nameof(SpawnEnemy), 2);
+    IEnumerator SpawnEnemy()
+    {
+        while(true)
+        {
+            RelocateEnemy();
+            yield return new WaitForSeconds(spawnTimer);
+        }
     }
 }
