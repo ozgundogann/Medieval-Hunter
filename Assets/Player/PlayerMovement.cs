@@ -1,44 +1,53 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] FixedJoystick fixedJoystick;
+    [SerializeField] Animator animator;
+    [SerializeField] Button attackButton;
     [SerializeField] float speed;
     [SerializeField] float maxSpeed = 5f;
-    [SerializeField] Animator animator;
-    [SerializeField] float attackSpeed = 2f;
 
     private Vector3 addedPos;
     private Vector3 lookVector;
     private float decreaseRate = 0.5f;
-
-    float horizontal;
-    float vertical;
+    private float horizontal;
+    private float vertical;
 
     void Start()
     {
         speed = maxSpeed;
-        StartCoroutine(AttackFunc());
+        attackButton.onClick.AddListener(Attack);
+        //StartCoroutine(AttackFunc());
     }
-
+    
     void FixedUpdate()
     {
         MovePlayer();
         RotatePlayer();
     }
 
-    private void MovePlayer()
+    void Attack()
     {
+        Debug.Log("Attacking!");
+    }
+
+    private void MovePlayer()
+    {        
         horizontal = fixedJoystick.Horizontal;
         vertical = fixedJoystick.Vertical;
 
-        addedPos = new Vector3(horizontal * speed * Time.fixedDeltaTime, 0, vertical * speed * Time.fixedDeltaTime);
-
-        transform.position += addedPos;
+        if(horizontal != 0 && vertical != 0)
+        {
+            addedPos = new Vector3(horizontal * speed * Time.fixedDeltaTime, 0, vertical * speed * Time.fixedDeltaTime);
+            transform.position += addedPos;
+        }
     }
 
     private void RotatePlayer()
@@ -59,18 +68,12 @@ public class PlayerMovement : MonoBehaviour
     {
         speed = maxSpeed;
     }
-
-    IEnumerator AttackFunc()
-    {
-        while (true)
-        {
-            Attack();
-            yield return new WaitForSeconds(attackSpeed);
-        }
-    }
-
-    void Attack()
-    {
-        animator.SetTrigger("Attack");
-    }
+    
+    //IEnumerator AttackFunc()
+    //{
+    //    while (true)
+    //    {
+    //        yield return new WaitForSeconds(attackSpeed);
+    //    }
+    //}
 }

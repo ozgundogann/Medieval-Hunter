@@ -10,58 +10,61 @@ public class Enemy : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float maxSpeed = 1.5f;
     [SerializeField] float enemyPosY = 0.5f;
+    [SerializeField] int enemyHealth = 1;
 
     private float decreaseRate = 0.5f;
-    private PlayerMovement playerMovement;
+    private PlayerMovement playerMovementScript;
     private Vector3 playerLocation;
 
     void Start()
     {
-        PlayerFeatures();
+        GetPlayerFeatures();
         speed = maxSpeed;//Speed of enemy
     }
+    
+    private void GetPlayerFeatures()
+    {
+        playerTransform = GameObject.Find("PlayerPlaceholder").transform;
+        playerMovementScript = playerTransform.GetComponent<PlayerMovement>();
+    }  
 
     void FixedUpdate()
     {
         EnemyMovement();
     }
     
-    void OnCollisionEnter(Collision collision)
-    {
-        DecreasePlayerSpeed(collision);
-        ResetKinematics();// Resets kinematicks of player and enemy.
-    }
-    
-    void OnCollisionExit(Collision collision)
-    {
-        if(collision.transform.tag == "Player")
-        {
-            playerMovement.IncreaseSpeed();
-        }
-    }
-
-    private void PlayerFeatures()
-    {
-        playerTransform = GameObject.Find("Player").transform;
-        playerMovement = playerTransform.GetComponent<PlayerMovement>();
-    }    
-
-    private void EnemyMovement()
+    void EnemyMovement()
     {
         playerLocation = playerTransform.position;
         playerLocation.y = enemyPosY;
         transform.LookAt(playerTransform.position);
         transform.position = Vector3.MoveTowards(transform.position, playerLocation, speed * Time.fixedDeltaTime);
     }    
-
-    private void DecreasePlayerSpeed(Collision collision)
+    
+    void OnCollisionEnter(Collision collision)
     {
         if (collision.transform.tag == "Player")
         {
-            playerMovement.DecreaseSpeed();
-            speed *= decreaseRate;
-            Invoke(nameof(StopEnemy), 1);
+            DecreasePlayerSpeed(collision);
         }
+        
+
+        ResetKinematics();// Resets enemy kinematicks.
+    }
+    
+    void OnCollisionExit(Collision collision)
+    {
+        if(collision.transform.tag == "Player")
+        {
+            playerMovementScript.IncreaseSpeed();
+        }
+    }          
+
+    private void DecreasePlayerSpeed(Collision collision)
+    {        
+        playerMovementScript.DecreaseSpeed();
+        speed *= decreaseRate;
+        Invoke(nameof(StopEnemy), 1);        
     }
 
     private void ResetKinematics()
@@ -80,8 +83,4 @@ public class Enemy : MonoBehaviour
     {
         speed = maxSpeed;
     }
-
-    
-
-
 }
