@@ -47,7 +47,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: c65161b4d2d2bc442b60501af4830221, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -69,7 +69,7 @@ GameObject:
   - component: {fileID: 656126231636873446}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,7 +165,6 @@ GameObject:
   - component: {fileID: 4750994465581768458}
   - component: {fileID: 4192008773081309615}
   - component: {fileID: 6948776642419126722}
-  - component: {fileID: 1197248841732782239}
   m_Layer: 0
   m_Name: Shaft
   m_TagString: Untagged
@@ -238,20 +237,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!136 &1197248841732782239
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4439888574456584989}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1 &8633916851712346360
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,7 +251,7 @@ GameObject:
   - component: {fileID: 3220687771313219154}
   m_Layer: 0
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -346,7 +331,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
+  m_Radius: 0.5
+  m_Height: 2.5
   m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+  m_Center: {x: 0, y: -0.61, z: 0}
