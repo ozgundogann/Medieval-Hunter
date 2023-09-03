@@ -7,14 +7,17 @@ using Random = UnityEngine.Random;
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
+    [SerializeField] GameObject enemyLargePrefab;
     [SerializeField] [Range(0.1f, 10f)]float spawnTimer = 1f;
     [SerializeField] [Range(1, 50)] int maxEnemy;
+    [SerializeField][Range(0, 10)] int enemyLargeNumber;
 
     float aboveInvisiblePoints = 17f;
     float belowInvisiblePoints = -13f;
     float leftInvisiblePoints = -25f;
     float rightInvisiblePoints = 25f;//Invisible points should not be adjust manually.
 
+    ResetEnemyFeatures enemyScript;
     GameObject player;
     GameObject[] pool;
     Vector3 spawnPoint;
@@ -29,23 +32,36 @@ public class ObjectPool : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnEnemy());    
+        StartCoroutine(SpawnEnemy());
     }
 
     void PopulatePool()
     {
         pool = new GameObject[maxEnemy];
 
-        for (int i = 0; i < pool.Length; i++)
+        for (int i = pool.Length - enemyLargeNumber; i < pool.Length; i++)
+        {
+            pool[i] = Instantiate(enemyLargePrefab, transform);
+            pool[i].SetActive(false);
+        }
+
+        for (int i = 0; i < pool.Length - enemyLargeNumber; i++)
         {
             pool[i] = Instantiate(enemyPrefab, transform);
             pool[i].SetActive(false);
         }
+
     }
 
     void RelocateEnemy()
     {
-        switch(Random.Range(1,5))// Returns 1-4
+        SetRandomPosition();
+        EnableEnemy();
+    }
+
+    void SetRandomPosition()
+    {
+        switch (Random.Range(1, 5))// Returns 1-4
         {
             case 1:
                 spawnPoint = new Vector3(player.transform.position.x, enemyHeightFromFloor, player.transform.position.z + aboveInvisiblePoints);
@@ -63,13 +79,17 @@ public class ObjectPool : MonoBehaviour
                 Debug.Log("Error");
                 break;
         }
+    }
 
+    void EnableEnemy()
+    {
         for (int i = 0; i < pool.Length; i++)
         {
             if (pool[i].activeInHierarchy == false)
             {
                 pool[i].transform.position = spawnPoint;
-                pool[i].transform.localScale = Vector3.one;
+                enemyScript = pool[i].gameObject.GetComponent<ResetEnemyFeatures>();
+                enemyScript.ResetChildObject();
                 pool[i].SetActive(true);
                 return;
             }
@@ -79,9 +99,10 @@ public class ObjectPool : MonoBehaviour
     IEnumerator SpawnEnemy()
     {
         while(true)
-        {
+        {           
             RelocateEnemy();
-            yield return new WaitForSeconds(spawnTimer);
+            Debug.Log("Spawning");
+            yield return new WaitForSeconds(spawnTimer);                         
         }
     }
 }

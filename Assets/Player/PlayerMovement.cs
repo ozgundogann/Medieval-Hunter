@@ -9,10 +9,12 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private FixedJoystick fixedJoystick;
-    [SerializeField] private Button attackButton;
-    [SerializeField] private float speed;
-    [SerializeField] private float maxSpeed = 5f;
+    [SerializeField] FixedJoystick fixedJoystick;
+    [SerializeField] Button attackButton;
+    [SerializeField] float speed;
+    [SerializeField] float maxSpeed = 5f;
+    [SerializeField] float decreaseRate = 0.55f;
+    [SerializeField] float autoAttackCooldown = 0f;
     [SerializeField] AnimationClip clip;
 
     [SerializeField] private Animator animator;
@@ -27,7 +29,6 @@ public class PlayerMovement : MonoBehaviour
     private TMP_Text buttonText;
     private Vector3 addedPos;
     private Vector3 lookVector;
-    private float decreaseRate = 0.5f;
     private float horizontal;
     private float vertical;
     private float attackCooldown = 0f;    
@@ -115,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
         while(true)
         {
             AutoAttack();
-            yield return new WaitForSeconds(attackCooldown);
+            yield return new WaitForSeconds(autoAttackCooldown);
         }
     }
 

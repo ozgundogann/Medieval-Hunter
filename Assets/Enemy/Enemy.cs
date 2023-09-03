@@ -5,23 +5,22 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
-{
-    [SerializeField] Transform playerTransform;
-    [SerializeField] Rigidbody rb;
-    [SerializeField] Animator animatior;
-    [SerializeField] int enemyMaxHealth = 1;
-    [SerializeField] int enemyPoint = 5;
+{    
+    [SerializeField] [Range(1, 10)] int enemyMaxHealth;
+    [SerializeField] float playerHeightPosY = 0.5f;
+    [SerializeField] public float decreaseRate = 0.5f;
     [SerializeField] float maxSpeed = 2.5f;
-    [SerializeField] AnimationClip clip;
+    [SerializeField] int enemyPoint = 5;
 
+    private Transform playerTransform;
+    private Vector3 playerLocation;
     private int enemyHealth;
     private float speed;
-    private float playerHeightPosY = 0.5f;
-    private float decreaseRate = 0.5f;
-    private PlayerMovement playerMovementScript;
-    private ScoreBoard scoreBoard;
-    private Vector3 playerLocation;
-    private bool hasEntered = false;
+
+    public float MaxSpeed { get => maxSpeed; set => maxSpeed = value; }
+    public int EnemyPoint { get => enemyPoint; set => enemyPoint = value; }
+    public float Speed { get => speed; set => speed = value; }
+    public int EnemyHealth { get => enemyHealth; set => enemyHealth = value; }
 
     void Start()
     {
@@ -30,27 +29,25 @@ public class Enemy : MonoBehaviour
 
     void OnEnable()
     {
-        ResetEnemyFeatures();
+        ResetEnemyFeatures();        
     }
 
     void FixedUpdate()
     {
         EnemyMovement();
-        Debug.Log(hasEntered);
     }
     
     void GetPlayerFeatures()
     {
-        scoreBoard = GameObject.Find("Score").GetComponent<ScoreBoard>();
         playerTransform = GameObject.Find("PlayerPlaceholder").transform;
-        playerMovementScript = playerTransform.GetComponent<PlayerMovement>();
     }      
     
     void ResetEnemyFeatures()
     {
-        speed = maxSpeed;//Speed of enemy
-        enemyHealth = enemyMaxHealth;
-        hasEntered = false;
+        speed = MaxSpeed;//Speed of enemy
+        EnemyHealth = enemyMaxHealth;
+        CollisionHandler clHandler = GetComponent<CollisionHandler>();
+        clHandler.HasEntered = false;
     }
     
     void EnemyMovement()
@@ -59,80 +56,5 @@ public class Enemy : MonoBehaviour
         playerLocation.y = playerHeightPosY;
         transform.LookAt(playerLocation);
         transform.position = Vector3.MoveTowards(transform.position, playerLocation, speed * Time.fixedDeltaTime);
-    }    
-    
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.transform.tag == "Player" && !hasEntered)
-        {
-            DecreasePlayerSpeed();
-        }        
-
-        ResetKinematics();// Resets enemy kinematicks.
-    }
-
-    void ResetKinematics()
-    {
-        rb.isKinematic = true;
-        rb.isKinematic = false; //This two line resets physics that is applied to this enemy from other enemy or player when collide.
-    }
-
-    void OnCollisionExit(Collision collision)
-    {
-        if (collision.transform.tag == "Player")
-        {
-           playerMovementScript.IncreaseSpeed();
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.transform.tag == "Weapon" && playerMovementScript.IsAttacking && !hasEntered)
-        {
-            hasEntered = true;
-            enemyHealth--;
-            if (enemyHealth <= 0)
-            {
-                KillEnemy();
-            }
-            else
-            {
-                Debug.Log("Damaged!!");
-                animatior.SetTrigger("Damage");
-            }
-            Invoke(nameof(SetHasEnteredFalse), clip.length / 2);
-        }
-    }
-
-    void SetHasEnteredFalse(){ hasEntered = false; }
-
-    void DecreasePlayerSpeed()
-    {        
-        playerMovementScript.DecreaseSpeed();
-        speed *= decreaseRate;
-        Invoke(nameof(StopEnemy), 1);        
-    }   
-
-    void StopEnemy()
-    {
-        speed = 0f;
-        Invoke(nameof(MoveEnemy), 1);
-    }
-
-    void MoveEnemy()
-    {
-        speed = maxSpeed;
-    }
-
-    public void KillEnemy()
-    {
-        animatior.SetTrigger("Dying");
-        Invoke(nameof(DisableEnemy), clip.length);
-    }
-
-    void DisableEnemy()
-    {
-        scoreBoard.AddPoints(enemyPoint);
-        gameObject.SetActive(false);
     }
 }
