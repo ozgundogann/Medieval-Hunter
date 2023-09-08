@@ -8,9 +8,9 @@ public class ObjectPool : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] GameObject enemyLargePrefab;
-    [SerializeField] [Range(0.1f, 10f)]float spawnTimer = 1f;
-    [SerializeField] [Range(1, 50)] int maxEnemy;
-    [SerializeField][Range(0, 10)] int enemyLargeNumber;
+    [SerializeField] [Range(0.1f, 10f)] float spawnTimer = 1f;
+    [SerializeField] [Range(0, 50)] int maxEnemy;
+    [SerializeField] [Range(0, 10)] int enemyLargeNumber;
 
     float aboveInvisiblePoints = 17f;
     float belowInvisiblePoints = -13f;
@@ -27,7 +27,7 @@ public class ObjectPool : MonoBehaviour
     {
         PopulatePool();
         player = GameObject.Find("Player");
-        enemyHeightFromFloor = enemyPrefab.transform.localScale.y / 2 + 0.1f;
+        //enemyHeightFromFloor = enemyPrefab.transform.localScale.y / 2 + 0.1f;
     }
 
     void Start()
@@ -51,6 +51,15 @@ public class ObjectPool : MonoBehaviour
             pool[i].SetActive(false);
         }
 
+    }
+
+    IEnumerator SpawnEnemy()
+    {
+        while (true)
+        {
+            RelocateEnemy();
+            yield return new WaitForSeconds(spawnTimer);
+        }
     }
 
     void RelocateEnemy()
@@ -94,15 +103,5 @@ public class ObjectPool : MonoBehaviour
                 return;
             }
         }
-    }
-
-    IEnumerator SpawnEnemy()
-    {
-        while(true)
-        {           
-            RelocateEnemy();
-            Debug.Log("Spawning");
-            yield return new WaitForSeconds(spawnTimer);                         
-        }
-    }
+    }    
 }

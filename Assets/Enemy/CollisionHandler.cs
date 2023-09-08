@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -33,7 +33,7 @@ public class CollisionHandler : MonoBehaviour
     {
         if (collision.transform.tag == "Player" && !HasEntered)
         {
-            DecreasePlayerSpeed();
+            DecreasePlayerSpeed();// Bunlari PlayerCollisionHandler scriptinde yaz.
         }
 
         ResetKinematics();// Resets enemy kinematicks.

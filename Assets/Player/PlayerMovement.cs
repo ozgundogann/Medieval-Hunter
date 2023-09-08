@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,33 +12,37 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] FixedJoystick fixedJoystick;
     [SerializeField] Button attackButton;
+    [SerializeField] TMP_Text statusMessage;
+    [SerializeField] CinemachineVirtualCamera virtualCamera;
+    [SerializeField] AnimationClip clip;
+    [SerializeField] Animator animator;
     [SerializeField] float speed;
     [SerializeField] float maxSpeed = 5f;
     [SerializeField] float decreaseRate = 0.55f;
     [SerializeField] float autoAttackCooldown = 0f;
-    [SerializeField] AnimationClip clip;
 
-    [SerializeField] private Animator animator;
-    public Animator Animator { get => animator; set => animator = value; }
-
-    private bool isAttacking = false;
-    public bool IsAttacking { get => isAttacking; }
-
-    private float newAttackTime = 2f;
-    public float NewAttackTime { get => newAttackTime; set => newAttackTime = value; }
-    
     private TMP_Text buttonText;
     private Vector3 addedPos;
     private Vector3 lookVector;
     private float horizontal;
     private float vertical;
     private float attackCooldown = 0f;    
+    private float newAttackTime = 2f;
+    private bool isAttacking = false;
+    private bool isDead = true;
+
+    public TMP_Text StatusMessage { get => statusMessage; set => statusMessage = value; }
+    public Animator Animator { get => animator; set => animator = value; }
+    public float NewAttackTime { get => newAttackTime; set => newAttackTime = value; }
+    public bool IsAttacking { get => isAttacking; }
+    public bool IsAutoAttackContinue { get => isDead; set => isDead = value; }
 
     void Start()
     {
         speed = maxSpeed;
         attackButton.onClick.AddListener(Attack);
         buttonText = attackButton.GetComponentInChildren<TMP_Text>();
+        statusMessage.gameObject.SetActive(false);
     }
     
     void FixedUpdate()
@@ -45,7 +50,8 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
         RotatePlayer();
         CooldownCounter();
-    }
+        LookCameraAlways();
+    }    
 
     void OnDisable()
     {
@@ -100,6 +106,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void LookCameraAlways()
+    {
+        statusMessage.transform.LookAt(virtualCamera.transform);
+        statusMessage.transform.Rotate(0f, 180f, 0f);
+    }
+
     public void DecreaseSpeed()
     {
         speed = maxSpeed * decreaseRate;
@@ -113,7 +125,7 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator AutoAttackCaller()
     {
         attackButton.gameObject.SetActive(false);
-        while(true)
+        while(isDead)
         {
             AutoAttack();
             yield return new WaitForSeconds(autoAttackCooldown);

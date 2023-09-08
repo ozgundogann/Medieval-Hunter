@@ -17,7 +17,6 @@ public class ResetEnemyFeatures : MonoBehaviour
     public void ResetChildObject()
     {        
         if (i++ == 0 ) { return; }
-        Debug.Log(childObjectScale);
         childObject.transform.localScale = childObjectScale;
     }
 }
