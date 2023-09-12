@@ -222,8 +222,9 @@ Transform:
   - {fileID: 1396689547}
   - {fileID: 1321367051}
   - {fileID: 1262690596}
+  - {fileID: 705507995}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &137276541
 GameObject:
@@ -1434,7 +1435,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Health Pack (3)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6943372475073012176, guid: 87c12eb687d3749419da1e2cf472b19f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 87c12eb687d3749419da1e2cf472b19f, type: 3}
 --- !u!1001 &634032577
 PrefabInstance:
@@ -1626,7 +1628,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -1662,7 +1664,7 @@ Light:
   m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -1677,13 +1679,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 123770334}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &708821996
 GameObject:
@@ -5242,7 +5244,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3423115669272176066, guid: 9c30e802115014c4e9a0a01d793b42ea, type: 3}
       propertyPath: maxEnemy
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3423115669272176066, guid: 9c30e802115014c4e9a0a01d793b42ea, type: 3}
       propertyPath: spawnTimer
@@ -5254,7 +5256,7 @@ PrefabInstance:
       objectReference: {fileID: 3786956441549211627, guid: 87f5710486d47fd478bf2947cc7c8254, type: 3}
     - target: {fileID: 3423115669272176066, guid: 9c30e802115014c4e9a0a01d793b42ea, type: 3}
       propertyPath: enemyLargeNumber
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3423115669272176066, guid: 9c30e802115014c4e9a0a01d793b42ea, type: 3}
       propertyPath: enemyLargePrefab
@@ -5456,7 +5458,7 @@ Transform:
   - {fileID: 988830329}
   - {fileID: 724403240}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6113973295861060115
 PrefabInstance:
@@ -5598,10 +5600,6 @@ PrefabInstance:
       propertyPath: fireButtonObject
       value: 
       objectReference: {fileID: 1194633499}
-    - target: {fileID: 6312262929487823510, guid: f729c579f8926134797b3cefc3699356, type: 3}
-      propertyPath: CollisionModule.collisionMessages
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7450005645130080593, guid: f729c579f8926134797b3cefc3699356, type: 3}
       propertyPath: m_Name
       value: PlayerPlaceholder

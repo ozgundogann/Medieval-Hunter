@@ -7,8 +7,11 @@ public class EnemyCollisionHandler : MonoBehaviour
 {
     [SerializeField] Animator animatior;
     [SerializeField] AnimationClip clipEnemyDying;
+    [SerializeField] AnimationClip clipDamage;
     [SerializeField] AnimationClip clipWeapon;
-    
+    [SerializeField] ParticleSystem enemyParticleSystem;
+    [SerializeField] RuntimeAnimatorController rc;
+
     private bool hasEntered = false;
     public bool HasEntered { get => hasEntered; set => hasEntered = value; }
 
@@ -16,7 +19,7 @@ public class EnemyCollisionHandler : MonoBehaviour
     private ScoreBoard scoreBoard;
     private PlayerMovement playerMovementScript;
     private Enemy enemyScript;
-    private Material enemyMaterial;
+    private Renderer enemyRenderer;
 
     void Start()
     {
@@ -29,7 +32,7 @@ public class EnemyCollisionHandler : MonoBehaviour
         scoreBoard = GameObject.Find("Score").GetComponent<ScoreBoard>();
         enemyScript = GetComponent<Enemy>();
         rb = GetComponent<Rigidbody>();
-        enemyMaterial = GetComponentInChildren<Renderer>().material;
+        enemyRenderer = GetComponentInChildren<Renderer>();
     }    
 
     void OnCollisionEnter(Collision collision)
@@ -60,28 +63,52 @@ public class EnemyCollisionHandler : MonoBehaviour
         if (enemyScript.EnemyHealth <= 0)
         {
             animatior.SetTrigger("Dying");
-            Invoke(nameof(DisableEnemy), clipEnemyDying.length / 2);
+            float particleAnimTime = enemyParticleSystem.main.duration + enemyParticleSystem.startLifetime;
+            Invoke(nameof(DisableEnemy), clipEnemyDying.length + particleAnimTime);
+            Invoke(nameof(PlayParticles), clipEnemyDying.length);
+            scoreBoard.AddPoints(enemyScript.EnemyPoint);
         }
         else
         {
             animatior.SetTrigger("Damage");
-
-            switch (enemyScript.EnemyHealth)
-            {
-                case 1:
-                    enemyMaterial.color = new Color(1f, 0.90f, 0.84f);
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                default:
-                    break;
-            }
+            Invoke(nameof(WaitAnimationToEnd), clipDamage.length +1 );
         }
         Invoke(nameof(SetHasEnteredFalse), clipWeapon.length);
+    }
+    
+    void PlayParticles()
+    {
+        enemyRenderer.enabled = false;
+        enemyParticleSystem.Play();
+    }
+
+    void DisableEnemy()
+    {        
+        gameObject.SetActive(false);
+    }
+
+    void WaitAnimationToEnd()
+    {
+        rc = gameObject.GetComponentInChildren<RuntimeAnimatorController>();
+        rc = null;
+
+        switch (enemyScript.EnemyHealth)
+        {
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                Debug.Log("Enemy H: " + enemyScript.EnemyHealth);
+                enemyRenderer.material.color = Color.yellow;
+                break;
+            default:
+                break;
+        }
+
+        //animatior = temp;
     }
 
     void OnCollisionExit(Collision collision)
@@ -101,12 +128,6 @@ public class EnemyCollisionHandler : MonoBehaviour
     }
 
     void SetHasEnteredFalse() { HasEntered = false; }
-
-    void DisableEnemy()
-    {
-        scoreBoard.AddPoints(enemyScript.EnemyPoint);
-        gameObject.SetActive(false);
-    }
 
     void DecreasePlayerSpeed()
     {

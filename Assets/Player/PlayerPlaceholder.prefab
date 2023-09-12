@@ -3848,7 +3848,7 @@ ParticleSystem:
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
@@ -4980,6 +4980,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7450005645130080598}
     m_Modifications:
+    - target: {fileID: 1149268879, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1149268879, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3188392506832048148, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
       propertyPath: m_SizeDelta.x
       value: 4.86
@@ -5006,7 +5014,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4333660887659200375, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: PlayerMesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 6948776642419126722, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6948776642419126722, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7100921692650012738, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
       propertyPath: m_IsActive
@@ -5064,7 +5080,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8682260506677414380, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8682260506677414380, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 1149268878, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ba15303aef4f0f24bb6a25dfa837ef6f, type: 3}
 --- !u!4 &2418936199086482994 stripped
 Transform:

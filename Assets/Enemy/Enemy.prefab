@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6e3277b9387f0c54e931e490c85fbe8e, type: 2}
+  - {fileID: 2100000, guid: d99241290d94df4498e3937e9b9fa122, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -170,7 +170,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 0.6, z: 0}
 --- !u!114 &996551510202517753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,3 +216,4 @@ MonoBehaviour:
   animatior: {fileID: 8794433280850978637}
   clipEnemyDying: {fileID: 7400000, guid: e90b2a081a7f8fb48b4405205c791be8, type: 2}
   clipWeapon: {fileID: 7400000, guid: 6b481be5aef6101438971397625b33a8, type: 2}
+  renderer: {fileID: 0}

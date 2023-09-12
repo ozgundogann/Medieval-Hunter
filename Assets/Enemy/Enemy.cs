@@ -46,8 +46,8 @@ public class Enemy : MonoBehaviour
     {
         speed = MaxSpeed;//Speed of enemy
         EnemyHealth = enemyMaxHealth;
-        EnemyCollisionHandler clHandler = GetComponent<EnemyCollisionHandler>();
-        clHandler.HasEntered = false;
+        GetComponent<EnemyCollisionHandler>().HasEntered = false;
+        GetComponentInChildren<Renderer>().enabled = true;
     }
     
     void EnemyMovement()

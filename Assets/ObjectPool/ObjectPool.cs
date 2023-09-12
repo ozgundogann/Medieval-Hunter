@@ -26,7 +26,7 @@ public class ObjectPool : MonoBehaviour
     void Awake()
     {
         PopulatePool();
-        player = GameObject.Find("Player");
+        player = GameObject.Find("PlayerMesh");
         //enemyHeightFromFloor = enemyPrefab.transform.localScale.y / 2 + 0.1f;
     }
 
