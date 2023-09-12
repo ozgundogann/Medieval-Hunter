@@ -6,21 +6,21 @@ using UnityEngine;
 public class PointHandler : MonoBehaviour
 {
     [SerializeField] GameObject weaponHead;
+    [SerializeField] TMP_Text statusMessage;
     [SerializeField] int levelMultiplier = 20;
     [SerializeField] int messageTime = 2;
-
-    PlayerMovement playerMovementScript;
-    TMP_Text statusMessage;
     
+    FireScript fireScript;
+    PlayerMovement playerMovementScript;
+        
     bool isEarned = false;
-
     bool isAllEarned = false;
-
 
     void Start()
     {
-        playerMovementScript = GameObject.Find("PlayerPlaceholder").GetComponentInParent<PlayerMovement>();
-        statusMessage = playerMovementScript.StatusMessage;
+        playerMovementScript = GameObject.Find("PlayerPlaceholder").GetComponent<PlayerMovement>();
+        fireScript = playerMovementScript.GetComponentInChildren<FireScript>();
+        fireScript.enabled = false;
     }
 
     public void SetNewReward(int point)
@@ -28,13 +28,18 @@ public class PointHandler : MonoBehaviour
         if(isAllEarned) { return; }
 
         statusMessage.gameObject.SetActive(true);
-
-        if(point >= levelMultiplier * 4 && !isEarned)
+        
+        if(point >= levelMultiplier * 5 && !isEarned)
         {
-            StartCoroutine(playerMovementScript.AutoAttackCaller());
-            statusMessage.text = "Auto attack active!";
+            statusMessage.text = "Firing gained tap to screen!!";
             isEarned = true;
             isAllEarned = true;
+            fireScript.enabled = true;
+        }
+        else if (point >= levelMultiplier * 4)
+        {
+            statusMessage.text = "Auto attack!";
+            StartCoroutine(playerMovementScript.AutoAttackCaller());
         }
         else if(point >= levelMultiplier * 3 )
         {
@@ -43,12 +48,12 @@ public class PointHandler : MonoBehaviour
         }
         else if (point >= levelMultiplier * 2)
         {
-            statusMessage.text = "Attack time decreased";
+            statusMessage.text = "Attack time decreased (0.5 sec.)";
             playerMovementScript.NewAttackTime = 0.5f;
         }
         else if (point >= levelMultiplier)
         {
-            statusMessage.text = "Attack time decreased";
+            statusMessage.text = "Attack time decreased (1 sec.)";
             playerMovementScript.NewAttackTime = 1f;
         }
 

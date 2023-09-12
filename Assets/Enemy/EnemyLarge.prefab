@@ -49,11 +49,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28448683283ffa4891677ed1c9e1cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMaxHealth: 1
-  playerHeightPosY: 1
+  enemyMaxHealth: 5
+  playerHeightPosY: 0.5
   decreaseRate: 0.5
   maxSpeed: 1.5
-  enemyPoint: 20
+  enemyPoint: 80
 --- !u!65 &455589838071271033
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -66,7 +66,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &2853637965543729100
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -81,7 +81,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 20
   m_CollisionDetection: 0
 --- !u!114 &7128408036481077428
 MonoBehaviour:
@@ -138,7 +138,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7754366976698544477}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -173,7 +173,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6e3277b9387f0c54e931e490c85fbe8e, type: 2}
+  - {fileID: 2100000, guid: 63394e65366db634f8ee1728773c3312, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

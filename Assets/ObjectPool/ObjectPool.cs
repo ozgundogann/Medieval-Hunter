@@ -17,7 +17,7 @@ public class ObjectPool : MonoBehaviour
     float leftInvisiblePoints = -25f;
     float rightInvisiblePoints = 25f;//Invisible points should not be adjust manually.
 
-    ResetEnemyFeatures enemyScript;
+    ResetEnemyFeatures enemyFeaturesScript;
     GameObject player;
     GameObject[] pool;
     Vector3 spawnPoint;
@@ -97,8 +97,8 @@ public class ObjectPool : MonoBehaviour
             if (pool[i].activeInHierarchy == false)
             {
                 pool[i].transform.position = spawnPoint;
-                enemyScript = pool[i].gameObject.GetComponent<ResetEnemyFeatures>();
-                enemyScript.ResetChildObject();
+                enemyFeaturesScript = pool[i].gameObject.GetComponent<ResetEnemyFeatures>();
+                enemyFeaturesScript.ResetChildObject();
                 pool[i].SetActive(true);
                 return;
             }

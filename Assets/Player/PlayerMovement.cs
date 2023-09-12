@@ -1,25 +1,19 @@
-using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] FixedJoystick fixedJoystick;
     [SerializeField] Button attackButton;
-    [SerializeField] TMP_Text statusMessage;
-    [SerializeField] CinemachineVirtualCamera virtualCamera;
     [SerializeField] AnimationClip clip;
     [SerializeField] Animator animator;
     [SerializeField] float speed;
     [SerializeField] float maxSpeed = 5f;
-    [SerializeField] float decreaseRate = 0.55f;
-    [SerializeField] float autoAttackCooldown = 0f;
+    [SerializeField] float speedDecreaseRate = 0.55f;
 
     private TMP_Text buttonText;
     private Vector3 addedPos;
@@ -30,8 +24,8 @@ public class PlayerMovement : MonoBehaviour
     private float newAttackTime = 2f;
     private bool isAttacking = false;
     private bool isDead = true;
+    private bool isAttackAuto = false;
 
-    public TMP_Text StatusMessage { get => statusMessage; set => statusMessage = value; }
     public Animator Animator { get => animator; set => animator = value; }
     public float NewAttackTime { get => newAttackTime; set => newAttackTime = value; }
     public bool IsAttacking { get => isAttacking; }
@@ -42,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
         speed = maxSpeed;
         attackButton.onClick.AddListener(Attack);
         buttonText = attackButton.GetComponentInChildren<TMP_Text>();
-        statusMessage.gameObject.SetActive(false);
     }
     
     void FixedUpdate()
@@ -50,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
         RotatePlayer();
         CooldownCounter();
-        LookCameraAlways();
     }    
 
     void OnDisable()
@@ -70,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void SetIsAttakingFalse(){ isAttacking = false; }//To use invoke this function exist.
+    void SetIsAttakingFalse(){ isAttacking = false; }//To use invoke, this function exist.
 
     void MovePlayer()
     {        
@@ -100,21 +92,16 @@ public class PlayerMovement : MonoBehaviour
             buttonText.text = Mathf.FloorToInt(attackCooldown + 1).ToString();
             attackCooldown -= Time.fixedDeltaTime;
         }
-        else
+        
+        if(!isAttackAuto)
         {
             buttonText.SetText("Attack");
         }
     }
 
-    void LookCameraAlways()
-    {
-        statusMessage.transform.LookAt(virtualCamera.transform);
-        statusMessage.transform.Rotate(0f, 180f, 0f);
-    }
-
     public void DecreaseSpeed()
     {
-        speed = maxSpeed * decreaseRate;
+        speed = maxSpeed * speedDecreaseRate;
     }
 
     public void IncreaseSpeed()
@@ -125,22 +112,21 @@ public class PlayerMovement : MonoBehaviour
     public IEnumerator AutoAttackCaller()
     {
         attackButton.gameObject.SetActive(false);
+        isAttackAuto = true;
         while(isDead)
         {
             AutoAttack();
-            yield return new WaitForSeconds(autoAttackCooldown);
+            yield return new WaitForSeconds(attackCooldown);
         }
     }
 
     void AutoAttack()
     {
         if (attackCooldown > 0) { return; }
-        if (!Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-        {
-            Animator.SetTrigger("Attack");
-            isAttacking = true;
-            Invoke(nameof(SetIsAttakingFalse), clip.length / 2);
-            attackCooldown = newAttackTime;
-        }
+                
+        animator.SetTrigger("Attack");
+        isAttacking = true;
+        Invoke(nameof(SetIsAttakingFalse), clip.length / 2);
+        attackCooldown = newAttackTime;        
     }
 }
