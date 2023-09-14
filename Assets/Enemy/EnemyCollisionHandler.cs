@@ -10,7 +10,6 @@ public class EnemyCollisionHandler : MonoBehaviour
     [SerializeField] AnimationClip clipDamage;
     [SerializeField] AnimationClip clipWeapon;
     [SerializeField] ParticleSystem enemyParticleSystem;
-    [SerializeField] RuntimeAnimatorController rc;
 
     private bool hasEntered = false;
     public bool HasEntered { get => hasEntered; set => hasEntered = value; }
@@ -39,7 +38,7 @@ public class EnemyCollisionHandler : MonoBehaviour
     {
         if (collision.transform.tag == "Player" && !HasEntered)
         {
-            DecreasePlayerSpeed();// Bunlari PlayerCollisionHandler scriptinde yaz.
+            DecreasePlayerSpeed();
         }
 
         ResetKinematics();// Resets enemy kinematicks.
@@ -51,9 +50,25 @@ public class EnemyCollisionHandler : MonoBehaviour
         rb.isKinematic = false; //This two line resets physics that is applied to this enemy from other enemy or player when collide.
     }
 
+    void OnCollisionExit(Collision collision)
+    {
+        if (collision.transform.tag == "Player")
+        {
+            playerMovementScript.IncreaseSpeed();
+        }
+    }   
+
     void OnParticleCollision(GameObject other)
     {
         ProcessHit();
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "Weapon" && playerMovementScript.IsAttacking && !hasEntered)
+        {
+            ProcessHit();
+        }
     }
 
     void ProcessHit()
@@ -67,11 +82,12 @@ public class EnemyCollisionHandler : MonoBehaviour
             Invoke(nameof(DisableEnemy), clipEnemyDying.length + particleAnimTime);
             Invoke(nameof(PlayParticles), clipEnemyDying.length);
             scoreBoard.AddPoints(enemyScript.EnemyPoint);
+            playerMovementScript.IncreaseSpeed();
         }
         else
         {
             animatior.SetTrigger("Damage");
-            Invoke(nameof(WaitAnimationToEnd), clipDamage.length +1 );
+            //Invoke(nameof(WaitAnimationToEnd), clipDamage.length +1 );
         }
         Invoke(nameof(SetHasEnteredFalse), clipWeapon.length);
     }
@@ -87,45 +103,24 @@ public class EnemyCollisionHandler : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    void WaitAnimationToEnd()
-    {
-        rc = gameObject.GetComponentInChildren<RuntimeAnimatorController>();
-        rc = null;
-
-        switch (enemyScript.EnemyHealth)
-        {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                Debug.Log("Enemy H: " + enemyScript.EnemyHealth);
-                enemyRenderer.material.color = Color.yellow;
-                break;
-            default:
-                break;
-        }
-
-        //animatior = temp;
-    }
-
-    void OnCollisionExit(Collision collision)
-    {
-        if (collision.transform.tag == "Player")
-        {
-            playerMovementScript.IncreaseSpeed();
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.transform.tag == "Weapon" && playerMovementScript.IsAttacking && !hasEntered)
-        {
-            ProcessHit();
-        }
-    }
+    //void WaitAnimationToEnd()
+    //{
+    //    switch (enemyScript.EnemyHealth)
+    //    {
+    //        case 1:
+    //            break;
+    //        case 2:
+    //            break;
+    //        case 3:
+    //            break;
+    //        case 4:
+    //            Debug.Log("Enemy H: " + enemyScript.EnemyHealth);
+    //            enemyRenderer.material.color = Color.yellow;
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //}
 
     void SetHasEnteredFalse() { HasEntered = false; }
 

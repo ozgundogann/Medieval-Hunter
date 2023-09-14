@@ -48,8 +48,8 @@ public class PointHandler : MonoBehaviour
         }
         else if (point >= levelMultiplier * 2)
         {
-            statusMessage.text = "Attack time decreased (0.5 sec.)";
-            playerMovementScript.NewAttackTime = 0.5f;
+            statusMessage.text = "Attack time decreased (0.8 sec.)";
+            playerMovementScript.NewAttackTime = 0.8f;
         }
         else if (point >= levelMultiplier)
         {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2235559718528158685}
   - component: {fileID: 7271807350276247986}
   - component: {fileID: 2552439944967103445}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DyingParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4826,7 +4826,7 @@ GameObject:
   - component: {fileID: 2853637965543729100}
   - component: {fileID: 7128408036481077428}
   - component: {fileID: 2666397441421825606}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyLarge
   m_TagString: EnemyLarge
   m_Icon: {fileID: 0}
@@ -4862,11 +4862,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b28448683283ffa4891677ed1c9e1cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyMaxHealth: 5
+  enemyMaxHealth: 4
   playerHeightPosY: 0.5
   decreaseRate: 0.5
   maxSpeed: 1.5
-  enemyPoint: 80
+  enemyPoint: 20
 --- !u!65 &455589838071271033
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4938,7 +4938,7 @@ GameObject:
   - component: {fileID: 7754366976698544473}
   - component: {fileID: 7754366976698544472}
   - component: {fileID: 22187139020692876}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EnemyLargeCube
   m_TagString: Enemy
   m_Icon: {fileID: 0}

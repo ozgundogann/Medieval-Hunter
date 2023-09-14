@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float speedDecreaseRate = 0.55f;
 
     private TMP_Text buttonText;
+    private Rigidbody rb;
     private Vector3 addedPos;
     private Vector3 lookVector;
     private float horizontal;
@@ -36,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
         speed = maxSpeed;
         attackButton.onClick.AddListener(Attack);
         buttonText = attackButton.GetComponentInChildren<TMP_Text>();
+        rb = GetComponent<Rigidbody>();
     }
     
     void FixedUpdate()
@@ -43,26 +45,12 @@ public class PlayerMovement : MonoBehaviour
         MovePlayer();
         RotatePlayer();
         CooldownCounter();
-    }    
+    }
 
     void OnDisable()
     {
         attackButton.onClick.RemoveListener(Attack);
     }
-
-    void Attack()
-    {
-        if(attackCooldown > 0) { return; }
-        if(!Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
-        {
-            Animator.SetTrigger("Attack");
-            isAttacking = true;
-            Invoke(nameof(SetIsAttakingFalse), Animator.GetCurrentAnimatorStateInfo(0).length / 2);
-            attackCooldown = newAttackTime;
-        }
-    }
-
-    void SetIsAttakingFalse(){ isAttacking = false; }//To use invoke, this function exist.
 
     void MovePlayer()
     {        
@@ -84,20 +72,38 @@ public class PlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(lookVector * Time.fixedDeltaTime);
         }
     }
-    
+
     void CooldownCounter()
     {
-        if(attackCooldown > 0)
+        if (attackCooldown > 0)
         {
             buttonText.text = Mathf.FloorToInt(attackCooldown + 1).ToString();
             attackCooldown -= Time.fixedDeltaTime;
         }
-        
-        if(!isAttackAuto)
+        else if (!isAttackAuto)
         {
             buttonText.SetText("Attack");
         }
     }
+
+    void CheckCollision()
+    {
+        
+    }
+
+    void Attack()
+    {
+        if(attackCooldown > 0) { return; }
+        if(!Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
+        {
+            Animator.SetTrigger("Attack");
+            isAttacking = true;
+            Invoke(nameof(SetIsAttakingFalse), Animator.GetCurrentAnimatorStateInfo(0).length / 2);
+            attackCooldown = newAttackTime;
+        }
+    }
+
+    void SetIsAttakingFalse(){ isAttacking = false; }//To use invoke, this function exist.
 
     public void DecreaseSpeed()
     {
