@@ -22,10 +22,10 @@ public class EnemyCollisionHandler : MonoBehaviour
 
     void Start()
     {
-        GetComponents();
+        GetVariousComponents();
     }
 
-    void GetComponents()
+    void GetVariousComponents()
     {
         playerMovementScript = GameObject.Find("PlayerPlaceholder").GetComponent<PlayerMovement>();
         scoreBoard = GameObject.Find("Score").GetComponent<ScoreBoard>();
@@ -102,25 +102,6 @@ public class EnemyCollisionHandler : MonoBehaviour
     {        
         gameObject.SetActive(false);
     }
-
-    //void WaitAnimationToEnd()
-    //{
-    //    switch (enemyScript.EnemyHealth)
-    //    {
-    //        case 1:
-    //            break;
-    //        case 2:
-    //            break;
-    //        case 3:
-    //            break;
-    //        case 4:
-    //            Debug.Log("Enemy H: " + enemyScript.EnemyHealth);
-    //            enemyRenderer.material.color = Color.yellow;
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
 
     void SetHasEnteredFalse() { HasEntered = false; }
 

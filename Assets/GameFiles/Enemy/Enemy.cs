@@ -42,7 +42,7 @@ public class Enemy : MonoBehaviour
         playerTransform = GameObject.Find("PlayerPlaceholder").transform;
     }      
     
-    void ResetEnemyFeatures()
+    void ResetEnemyFeatures()//Resets Enemy features after dying
     {
         speed = MaxSpeed;//Speed of enemy
         EnemyHealth = enemyMaxHealth;
