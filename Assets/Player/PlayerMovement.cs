@@ -44,8 +44,8 @@ public class PlayerMovement : MonoBehaviour
     {
         MovePlayer();
         RotatePlayer();
-        CooldownCounter();
-    }
+        CooldownCounter();        
+    }    
 
     void OnDisable()
     {
@@ -86,11 +86,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void CheckCollision()
-    {
-        
-    }
-
     void Attack()
     {
         if(attackCooldown > 0) { return; }
@@ -128,11 +123,10 @@ public class PlayerMovement : MonoBehaviour
 
     void AutoAttack()
     {
-        if (attackCooldown > 0) { return; }
-                
+        if (attackCooldown > 0) { return; }                
         animator.SetTrigger("Attack");
         isAttacking = true;
         Invoke(nameof(SetIsAttakingFalse), clip.length / 2);
-        attackCooldown = newAttackTime;        
+        attackCooldown = newAttackTime;
     }
 }

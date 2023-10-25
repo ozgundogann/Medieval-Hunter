@@ -60,6 +60,19 @@ public class PointHandler : MonoBehaviour
         Invoke(nameof(DisableMessage), messageTime);
     }
 
+    public void returnPlaygroundMessage()
+    {
+        if(!statusMessage.gameObject.activeSelf)
+        {
+            Debug.Log("Active");
+            statusMessage.gameObject.SetActive(true);
+        }
+
+        statusMessage.text = "Return to Playground!!!";
+
+        Invoke(nameof(DisableMessage), messageTime);
+    }
+
     void DisableMessage()
     {
         statusMessage.gameObject.SetActive(false);

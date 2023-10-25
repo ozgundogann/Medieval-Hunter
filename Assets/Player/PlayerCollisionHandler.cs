@@ -13,10 +13,12 @@ public class PlayerCollisionHandler : MonoBehaviour
     [SerializeField] int enemyDamagePoint = 5;
     [SerializeField] int enemyLargeDamagePoint = 10;
     [SerializeField] int healthPoint = 20;
+    [SerializeField] int borderDamage = 30;
 
     GameObject playableUI;
     GameObject diedScreenHandler;
     PlayerMovement playerMovementScript;
+    PointHandler pointHandlerScript;
     Collider healthCollider;
     int reloadSceneTime = 3;
 
@@ -24,6 +26,25 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         playableUI = GameObject.Find("PlayableUI");
         playerMovementScript = GetComponent<PlayerMovement>();
+        pointHandlerScript = GameObject.Find("PointHandler").GetComponent<PointHandler>();
+    }
+
+    void Update()
+    {
+        if (IsPlayerOutOfPlayground())
+        {
+            PlayerGetsDamage(borderDamage);
+        }
+    }
+
+    bool IsPlayerOutOfPlayground()
+    {
+        if (gameObject.transform.position.x > 60 || gameObject.transform.position.x < -60 || gameObject.transform.position.z > 60 || gameObject.transform.position.z < -60)
+        {
+            pointHandlerScript.returnPlaygroundMessage();
+            return true;
+        }        
+        return false;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -62,7 +83,7 @@ public class PlayerCollisionHandler : MonoBehaviour
         if(other.tag == "Health")
         {
             HealthHandler(other);            
-        }
+        }        
     }
 
     void HealthHandler(Collider other)

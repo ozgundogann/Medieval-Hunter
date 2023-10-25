@@ -8,6 +8,7 @@ TagManager:
   - Weapon
   - EnemyLarge
   - Health
+  - Border
   layers:
   - Default
   - TransparentFX
