@@ -1,6 +1,6 @@
 # Medieval-Hunter
 
-A simple survival-action game where your only goal is to survive and crush enemies to earn points and unlock talents.
+A simple survival-action mobile game where your only goal is to survive and crush enemies to earn points and unlock talents.
 
 ## Description
 
