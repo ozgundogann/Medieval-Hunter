@@ -12,6 +12,9 @@ Medieval-Hunter is a raw survival-action game created using the Unity game engin
 - Crush enemies to earn points and unlock new talents.
 - Reduce cooldowns and enhance your character's abilities.
 
+## [Video (Google Drive)](https://drive.google.com/drive/folders/1G5jQM1697QoCXEkmKPfcHv4Ipiy78Q8O)
+
+
 ## How to Run
 
 ### Prerequisites
